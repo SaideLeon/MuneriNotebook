@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@layer base {
+  body {
+    @apply bg-[var(--parchment)] text-[var(--ink)] font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer utilities {
+  .btn-gold {
+    @apply flex items-center gap-2 rounded bg-gradient-to-br from-[var(--gold)] to-[var(--gold2)] px-6 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.08em] text-black shadow-lg transition-transform hover:scale-[1.02] active:scale-95;
+  }
+  
+  .btn-border {
+    @apply flex items-center gap-1.5 rounded border border-[var(--border)] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--muted)] transition hover:border-[var(--gold2)] hover:text-[var(--gold2)];
+  }
+
+  .label-mono {
+    @apply font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--faint)];
+  }
+
+  .panel-editorial {
+    @apply bg-[var(--parchment)] border border-[var(--border)] rounded-xl;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
