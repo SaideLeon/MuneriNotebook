@@ -1,6 +1,7 @@
 import { useAppStore } from '@/store/mnotes/app-store';
-import { Message, Source } from '@/types/mnotes';
+import { Message } from '@/types/mnotes';
 import { useActivity } from './useActivity';
+import { NotebookService } from '@/services/mnotes/notebook.service';
 
 export function useChat() {
   const { 
@@ -26,50 +27,11 @@ export function useChat() {
     setIsLoading(true);
 
     try {
-      const selectedSources = sources.filter(s => s.selected && s.data);
-      
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          parts: [
-            ...selectedSources.map(s => {
-              if (s.type === 'pdf') {
-                return {
-                  inlineData: {
-                    mimeType: 'application/pdf',
-                    data: s.data!
-                  }
-                };
-              } else {
-                try {
-                  const decodedText = decodeURIComponent(escape(atob(s.data!)));
-                  return {
-                    text: `Conteúdo da fonte "${s.name}":\n${decodedText}`
-                  };
-                } catch(e) {
-                   return { text: `Erro na fonte: ${s.name}` };
-                }
-              }
-            }),
-            {
-              text: `
-                Você é o assistente inteligente do Muneri Notebooks.
-                Contexto do notebook atual: ${selectedNotebook?.title}.
-                
-                Responda à pergunta do usuário com base nas fontes PDF/Texto fornecidas. 
-                REGRAS CRÍTICAS:
-                1. Sempre que usar informação de uma fonte, adicione uma citação no formato [Doc X, pg Y] (ou apenas [Doc X] para texto) imediatamente após a frase relevante.
-                2. Use uma linguagem clara e informativa.
-                
-                Pergunta: ${content}
-              `
-            }
-          ]
-        })
-      });
-
-      const text = await response.text();
+      const text = await NotebookService.chat(
+        [...messages, userMessage], 
+        sources, 
+        selectedNotebook?.title || 'Notebook'
+      );
 
       // Extract citation IDs using regex
       const citationMatches = text.match(/\[Doc (\d+)(?:, pg (\d+))?\]/g);
@@ -105,20 +67,7 @@ export function useChat() {
     });
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          parts: [
-            source.type === 'pdf' 
-              ? { inlineData: { mimeType: 'application/pdf', data: source.data } }
-              : { text: `Resuma este texto:\n${decodeURIComponent(escape(atob(source.data)))}` },
-            { text: "Forneça um resumo executivo conciso deste documento. Destaque os pontos principais em tópicos." }
-          ]
-        })
-      });
-      
-      const text = await response.text();
+      const text = await NotebookService.summarize(source);
 
       addMessage({
         id: crypto.randomUUID(),
