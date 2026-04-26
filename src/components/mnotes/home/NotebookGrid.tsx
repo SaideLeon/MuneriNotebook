@@ -11,7 +11,7 @@ export const NotebookCard = ({ notebook }: { notebook: Notebook }) => {
 
   const handleOpen = () => {
     setSelectedNotebook(notebook);
-    setSources(notebook.sources);
+    setSources(notebook.sources || []);
     setMessages([]);
     setView('notebook');
   };
@@ -26,7 +26,7 @@ export const NotebookCard = ({ notebook }: { notebook: Notebook }) => {
           {notebook.icon}
         </div>
         <span className="label-mono text-[var(--gold2)] bg-[var(--gold2)]/10 px-2 sm:px-2.5 py-1 rounded-full text-[9px] sm:text-[10px]">
-          {notebook.sources.length} Fontes
+          {(notebook.sources || []).length} Fontes
         </span>
       </div>
       <h3 className="font-serif text-xl sm:text-2xl group-hover:text-[var(--gold2)] transition-colors leading-tight">{notebook.title}</h3>

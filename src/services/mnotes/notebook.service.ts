@@ -1,4 +1,7 @@
 import { Message, Source } from '@/types/mnotes';
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY || '' });
 
 export const NotebookService = {
   async chat(messages: Message[], sources: Source[], notebookTitle: string): Promise<string> {
@@ -39,17 +42,12 @@ export const NotebookService = {
       }
     ];
 
-    const response = await fetch('/api/mnotes/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ parts })
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: [{ role: 'user', parts }]
     });
 
-    if (!response.ok) {
-      throw new Error('Falha na comunicação com o assistente');
-    }
-
-    return response.text();
+    return response.text || '';
   },
 
   async summarize(source: Source): Promise<string> {
@@ -62,17 +60,12 @@ export const NotebookService = {
       { text: "Forneça um resumo executivo conciso deste documento. Destaque os pontos principais em tópicos." }
     ];
 
-    const response = await fetch('/api/mnotes/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ parts })
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: [{ role: 'user', parts }]
     });
 
-    if (!response.ok) {
-      throw new Error('Falha ao gerar resumo');
-    }
-
-    return response.text();
+    return response.text || '';
   },
 
   async getSuggestions(sources: Source[]): Promise<string[]> {
@@ -97,15 +90,12 @@ export const NotebookService = {
       }
     ];
 
-    const response = await fetch('/api/mnotes/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ parts })
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: [{ role: 'user', parts }]
     });
 
-    if (!response.ok) return [];
-
-    const text = await response.text();
+    const text = response.text || '';
     return text.split('\n')
       .map(q => q.trim())
       .filter(q => q.length > 5 && q.includes('?'))
