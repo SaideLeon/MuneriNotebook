@@ -1,37 +1,37 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
-@layer base {
-  body {
-    @apply bg-[var(--parchment)] text-[var(--ink)] font-sans antialiased;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
-  }
-}
-
-@layer utilities {
+@layer components {
   .btn-gold {
-    @apply flex items-center gap-2 rounded bg-gradient-to-br from-[var(--gold)] to-[var(--gold2)] px-6 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.08em] text-black shadow-lg transition-transform hover:scale-[1.02] active:scale-95;
+     @apply px-4 py-2 bg-[var(--gold)] text-black rounded-lg hover:bg-[var(--gold2)] transition-all font-medium flex items-center gap-2 shadow-sm active:scale-95;
   }
   
   .btn-border {
-    @apply flex items-center gap-1.5 rounded border border-[var(--border)] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--muted)] transition hover:border-[var(--gold2)] hover:text-[var(--gold2)];
+     @apply px-4 py-2 border border-[var(--border)] rounded-lg hover:border-[var(--gold2)] hover:text-[var(--gold2)] transition-all flex items-center gap-2;
   }
-
+  
+  .icon-btn {
+     @apply p-2 rounded-lg hover:bg-[var(--border)]/20 transition-all text-[var(--ink)];
+  }
+  
   .label-mono {
-    @apply font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--faint)];
-  }
-
-  .panel-editorial {
-    @apply bg-[var(--parchment)] border border-[var(--border)] rounded-xl;
+    @apply font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--muted)];
   }
 }
 
+:root {
+  --background: #f5f0e8;
+  --foreground: #0f0e0d;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -39,6 +39,19 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--border, #d8ceb8);
   border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold2, #c9a96e);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

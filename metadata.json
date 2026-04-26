@@ -1,6 +1,5 @@
 {
   "name": "Muneri Notebooks",
-  "description": "Uma plataforma inteligente para organizar e interagir com seus documentos, inspirada no NotebookLM.",
-  "requestFramePermissions": [],
-  "majorCapabilities": []
+  "description": "Uma plataforma inteligente para organização de fontes e diálogos académicos, com suporte a PDF e buscas semânticas.",
+  "requestFramePermissions": []
 }

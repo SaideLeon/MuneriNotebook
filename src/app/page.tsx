@@ -2,16 +2,16 @@
 
 import React, { useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { useThemeMode } from '@/hooks/useThemeMode';
-import { useAppStore } from '@/store/app-store';
-import { INITIAL_NOTEBOOKS } from '@/lib/data/initial-notebooks';
+import { useThemeMode } from '@/hooks/mnotes/useThemeMode';
+import { useAppStore } from '@/store/mnotes/app-store';
+import { INITIAL_NOTEBOOKS } from '@/lib/mnotes/data/initial-notebooks';
 
 // Components
-import { AppNav } from '@/components/layout/AppNav';
-import { HomeView } from '@/components/home/HomeView';
-import { NotebookView } from '@/components/notebook/NotebookView';
-import { ActivityPanel } from '@/components/notebook/activity/ActivityPanel';
-import { AddSourceModal } from '@/components/modals/AddSourceModal';
+import { AppNav } from '@/components/mnotes/layout/AppNav';
+import { HomeView } from '@/components/mnotes/home/HomeView';
+import { NotebookView } from '@/components/mnotes/notebook/NotebookView';
+import { ActivityPanel } from '@/components/mnotes/notebook/activity/ActivityPanel';
+import { AddSourceModal } from '@/components/mnotes/modals/AddSourceModal';
 
 export default function MuneriNotebooks() {
   const { themeMode, mounted } = useThemeMode();
